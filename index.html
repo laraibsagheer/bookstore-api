@@ -1,49 +1,76 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookstore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-        h1 { text-align: center; color: #333; margin-bottom: 20px; }
-        .container { max-width: 800px; margin: auto; }
-        .form-box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; }
-        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
-        button:hover { background: #218838; }
-        .btn-delete { background: #dc3545; }
-        .btn-delete:hover { background: #c82333; }
-        .book-card { background: white; padding: 15px; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-        .book-info h3 { color: #333; }
-        .book-info p { color: #666; font-size: 14px; }
-        #message { padding: 10px; border-radius: 4px; margin: 10px 0; text-align: center; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 30px 20px; }
+        h1 { text-align: center; color: white; font-size: 2.5rem; font-weight: 700; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        h1 span { font-size: 2.5rem; }
+        .container { max-width: 900px; margin: auto; }
+        .card { background: white; border-radius: 16px; padding: 30px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .card h2 { color: #4a4a8a; font-size: 1.4rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #667eea; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.85rem; color: #666; margin-bottom: 5px; font-weight: 600; }
+        .form-group input { padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; font-family: 'Poppins', sans-serif; transition: border 0.3s; }
+        .form-group input:focus { outline: none; border-color: #667eea; }
+        .btn { padding: 12px 30px; border: none; border-radius: 8px; font-size: 1rem; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 15px; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; width: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .btn-refresh { background: #f0f0ff; color: #667eea; border: 2px solid #667eea; margin-top: 0; margin-bottom: 20px; }
+        .btn-refresh:hover { background: #667eea; color: white; }
+        .book-card { background: linear-gradient(135deg, #f5f7ff, #ffffff); border: 1px solid #e0e0ff; border-radius: 12px; padding: 20px; margin: 12px 0; display: flex; justify-content: space-between; align-items: center; transition: transform 0.2s; }
+        .book-card:hover { transform: translateX(5px); }
+        .book-info h3 { color: #333; font-size: 1.1rem; font-weight: 600; }
+        .book-info p { color: #888; font-size: 0.85rem; margin-top: 5px; }
+        .book-info .badge { display: inline-block; background: #667eea; color: white; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; margin-top: 5px; }
+        .btn-delete { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: white; padding: 8px 18px; border: none; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; transition: all 0.3s; }
+        .btn-delete:hover { transform: scale(1.05); box-shadow: 0 3px 10px rgba(238,90,36,0.4); }
+        #message { padding: 12px 20px; border-radius: 8px; margin: 10px 0; text-align: center; font-weight: 600; display: none; }
+        .success { background: #d4edda; color: #155724; display: block !important; }
+        .error { background: #f8d7da; color: #721c24; display: block !important; }
+        .empty { text-align: center; color: #aaa; padding: 30px; font-size: 1rem; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📚 Bookstore</h1>
+        <h1>📚 Bookstore Management</h1>
 
-        <!-- Add Book Form -->
-        <div class="form-box">
-            <h2>Add New Book</h2>
-            <input type="text" id="title" placeholder="Title" />
-            <input type="text" id="author" placeholder="Author" />
-            <input type="number" id="price" placeholder="Price" />
-            <input type="text" id="isbn" placeholder="ISBN" />
-            <input type="date" id="publishedDate" />
-            <button onclick="addBook()">Add Book</button>
+        <div class="card">
+            <h2>➕ Add New Book</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="title" placeholder="e.g. Atomic Habits" />
+                </div>
+                <div class="form-group">
+                    <label>Author</label>
+                    <input type="text" id="author" placeholder="e.g. James Clear" />
+                </div>
+                <div class="form-group">
+                    <label>Price ($)</label>
+                    <input type="number" id="price" placeholder="e.g. 20" />
+                </div>
+                <div class="form-group">
+                    <label>ISBN</label>
+                    <input type="text" id="isbn" placeholder="e.g. 1234567890" />
+                </div>
+                <div class="form-group">
+                    <label>Published Date</label>
+                    <input type="date" id="publishedDate" />
+                </div>
+            </div>
+            <div id="message"></div>
+            <button class="btn btn-primary" onclick="addBook()">Add Book</button>
         </div>
 
-        <div id="message"></div>
-
-        <!-- Books List -->
-        <div class="form-box">
-            <h2>All Books</h2>
-            <button onclick="getBooks()">Refresh Books</button>
+        <div class="card">
+            <h2>📖 All Books</h2>
+            <button class="btn btn-refresh" onclick="getBooks()">🔄 Refresh</button>
             <div id="booksList"></div>
         </div>
     </div>
@@ -52,20 +79,29 @@
         const API = 'http://localhost:5000/books';
 
         async function getBooks() {
-            const res = await fetch(API);
-            const books = await res.json();
-            const list = document.getElementById('booksList');
-            list.innerHTML = '';
-            books.forEach(book => {
-                list.innerHTML += `
-                    <div class="book-card">
-                        <div class="book-info">
-                            <h3>${book.title}</h3>
-                            <p>Author: ${book.author} | Price: $${book.price} | ISBN: ${book.isbn}</p>
-                        </div>
-                        <button class="btn-delete" onclick="deleteBook('${book._id}')">Delete</button>
-                    </div>`;
-            });
+            try {
+                const res = await fetch(API);
+                const books = await res.json();
+                const list = document.getElementById('booksList');
+                if (books.length === 0) {
+                    list.innerHTML = '<p class="empty">No books found. Add your first book!</p>';
+                    return;
+                }
+                list.innerHTML = '';
+                books.forEach(book => {
+                    list.innerHTML += `
+                        <div class="book-card">
+                            <div class="book-info">
+                                <h3>${book.title}</h3>
+                                <p>✍️ ${book.author} &nbsp;|&nbsp; 💰 $${book.price}</p>
+                                <span class="badge">ISBN: ${book.isbn}</span>
+                            </div>
+                            <button class="btn-delete" onclick="deleteBook('${book._id}')">🗑️ Delete</button>
+                        </div>`;
+                });
+            } catch (err) {
+                showMessage('Server se connect nahi ho saka!', false);
+            }
         }
 
         async function addBook() {
@@ -76,6 +112,10 @@
                 isbn: document.getElementById('isbn').value,
                 publishedDate: document.getElementById('publishedDate').value
             };
+            if (!book.title || !book.author || !book.price || !book.isbn || !book.publishedDate) {
+                showMessage('Please fill all fields!', false);
+                return;
+            }
             const res = await fetch(API, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -83,10 +123,18 @@
             });
             const data = await res.json();
             showMessage(data.message || data.error, res.ok);
-            if (res.ok) getBooks();
+            if (res.ok) {
+                document.getElementById('title').value = '';
+                document.getElementById('author').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('isbn').value = '';
+                document.getElementById('publishedDate').value = '';
+                getBooks();
+            }
         }
 
         async function deleteBook(id) {
+            if (!confirm('Delete this book?')) return;
             const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
             const data = await res.json();
             showMessage(data.message, res.ok);
@@ -97,7 +145,7 @@
             const el = document.getElementById('message');
             el.textContent = msg;
             el.className = success ? 'success' : 'error';
-            setTimeout(() => el.textContent = '', 3000);
+            setTimeout(() => { el.className = ''; el.textContent = ''; }, 3000);
         }
 
         getBooks();
